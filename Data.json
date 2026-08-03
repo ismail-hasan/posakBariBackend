@@ -1,0 +1,319 @@
+[
+      {
+            "id": 1,
+            "name": "Argentina Home Jersey 2026",
+            "slug": "argentina-home-jersey-2026",
+            "category": "Football Jersey",
+            "brand": "Posak Bari",
+            "price": 850,
+            "discountPrice": 750,
+            "stock": 50,
+            "size": [
+                  "S",
+                  "M",
+                  "L",
+                  "XL",
+                  "XXL"
+            ],
+            "color": [
+                  "Sky Blue",
+                  "White"
+            ],
+            "material": "100% Polyester",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": true,
+            "rating": 4.9,
+            "reviews": 128,
+            "thumbnail": "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg",
+                  "https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg",
+                  "https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg"
+            ],
+            "description": "Premium quality Argentina football jersey made with breathable polyester fabric.",
+            "status": "active"
+      },
+      {
+            "id": 2,
+            "name": "Spain Home Jersey 2026",
+            "slug": "spain-home-jersey-2026",
+            "category": "Football Jersey",
+            "brand": "Posak Bari",
+            "price": 850,
+            "discountPrice": 750,
+            "stock": 35,
+            "size": [
+                  "S",
+                  "M",
+                  "L",
+                  "XL"
+            ],
+            "color": [
+                  "Red"
+            ],
+            "material": "Polyester",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": true,
+            "rating": 4.8,
+            "reviews": 84,
+            "thumbnail": "https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg"
+            ],
+            "description": "Official style Spain jersey.",
+            "status": "active"
+      },
+      {
+            "id": 3,
+            "name": "Brazil Home Jersey",
+            "slug": "brazil-home-jersey",
+            "category": "Football Jersey",
+            "brand": "Posak Bari",
+            "price": 850,
+            "discountPrice": 780,
+            "stock": 40,
+            "size": [
+                  "S",
+                  "M",
+                  "L",
+                  "XL"
+            ],
+            "color": [
+                  "Yellow"
+            ],
+            "material": "Polyester",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": false,
+            "rating": 4.7,
+            "reviews": 65,
+            "thumbnail": "https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg"
+            ],
+            "description": "Brazil home jersey.",
+            "status": "active"
+      },
+      {
+            "id": 4,
+            "name": "Portugal Home Jersey",
+            "slug": "portugal-home-jersey",
+            "category": "Football Jersey",
+            "brand": "Posak Bari",
+            "price": 850,
+            "discountPrice": 780,
+            "stock": 30,
+            "size": [
+                  "M",
+                  "L",
+                  "XL"
+            ],
+            "color": [
+                  "Red",
+                  "Green"
+            ],
+            "material": "Polyester",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": false,
+            "rating": 4.6,
+            "reviews": 42,
+            "thumbnail": "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg"
+            ],
+            "description": "Portugal football jersey.",
+            "status": "active"
+      },
+      {
+            "id": 5,
+            "name": "Manchester City Jersey",
+            "slug": "manchester-city-home",
+            "category": "Club Jersey",
+            "brand": "Posak Bari",
+            "price": 900,
+            "discountPrice": 820,
+            "stock": 22,
+            "size": [
+                  "S",
+                  "M",
+                  "L",
+                  "XL"
+            ],
+            "color": [
+                  "Blue"
+            ],
+            "material": "Polyester",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": true,
+            "rating": 4.9,
+            "reviews": 140,
+            "thumbnail": "https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg"
+            ],
+            "description": "Manchester City home jersey.",
+            "status": "active"
+      },
+      {
+            "id": 6,
+            "name": "Real Madrid Jersey",
+            "slug": "real-madrid-home",
+            "category": "Club Jersey",
+            "brand": "Posak Bari",
+            "price": 900,
+            "discountPrice": 850,
+            "stock": 18,
+            "size": [
+                  "S",
+                  "M",
+                  "L",
+                  "XL"
+            ],
+            "color": [
+                  "White"
+            ],
+            "material": "Polyester",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": true,
+            "rating": 5,
+            "reviews": 215,
+            "thumbnail": "https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg"
+            ],
+            "description": "Real Madrid official style jersey.",
+            "status": "active"
+      },
+      {
+            "id": 7,
+            "name": "Custom Cricket Jersey",
+            "slug": "custom-cricket-jersey",
+            "category": "Cricket Jersey",
+            "brand": "Posak Bari",
+            "price": 650,
+            "discountPrice": 600,
+            "stock": 100,
+            "size": [
+                  "S",
+                  "M",
+                  "L",
+                  "XL",
+                  "XXL"
+            ],
+            "color": [
+                  "Custom"
+            ],
+            "material": "Micro Polyester",
+            "printing": "Full Sublimation",
+            "gender": "Unisex",
+            "featured": true,
+            "rating": 4.8,
+            "reviews": 55,
+            "thumbnail": "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg"
+            ],
+            "description": "Custom cricket jersey for clubs.",
+            "status": "active"
+      },
+      {
+            "id": 8,
+            "name": "Esports Gaming Jersey",
+            "slug": "gaming-jersey",
+            "category": "Gaming Jersey",
+            "brand": "Posak Bari",
+            "price": 700,
+            "discountPrice": 650,
+            "stock": 80,
+            "size": [
+                  "S",
+                  "M",
+                  "L",
+                  "XL"
+            ],
+            "color": [
+                  "Black"
+            ],
+            "material": "Dry Fit",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": false,
+            "rating": 4.9,
+            "reviews": 40,
+            "thumbnail": "https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg"
+            ],
+            "description": "Professional esports jersey.",
+            "status": "active"
+      },
+      {
+            "id": 9,
+            "name": "Training Jersey",
+            "slug": "training-jersey",
+            "category": "Sports Wear",
+            "brand": "Posak Bari",
+            "price": 550,
+            "discountPrice": 500,
+            "stock": 120,
+            "size": [
+                  "S",
+                  "M",
+                  "L",
+                  "XL"
+            ],
+            "color": [
+                  "Black",
+                  "Blue"
+            ],
+            "material": "Polyester",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": false,
+            "rating": 4.7,
+            "reviews": 26,
+            "thumbnail": "https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg"
+            ],
+            "description": "Lightweight training jersey.",
+            "status": "active"
+      },
+      {
+            "id": 10,
+            "name": "Custom School Jersey",
+            "slug": "school-jersey",
+            "category": "School Jersey",
+            "brand": "Posak Bari",
+            "price": 500,
+            "discountPrice": 450,
+            "stock": 200,
+            "size": [
+                  "XS",
+                  "S",
+                  "M",
+                  "L",
+                  "XL"
+            ],
+            "color": [
+                  "Custom"
+            ],
+            "material": "Polyester",
+            "printing": "Sublimation",
+            "gender": "Unisex",
+            "featured": true,
+            "rating": 4.8,
+            "reviews": 71,
+            "thumbnail": "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg",
+            "gallery": [
+                  "https://images.pexels.com/photos/1884574/pexels-photo-1884574.jpeg"
+            ],
+            "description": "Custom school sports jersey.",
+            "status": "active"
+      }
+]
