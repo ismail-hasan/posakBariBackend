@@ -13,17 +13,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-
-// posakBari
-// jaQEDe8ZptBvdj0U
-
 //mongoDB
 
 const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-shard-00-00.gbi1i.mongodb.net:27017,cluster0-shard-00-01.gbi1i.mongodb.net:27017,cluster0-shard-00-02.gbi1i.mongodb.net:27017/?ssl=true&replicaSet=atlas-codyet-shard-0&authSource=admin&appName=Cluster0"`;
 console.log(uri)
-
-// const uri = "mongodb://posakBari:jaQEDe8ZptBvdj0U@cluster0-shard-00-00.gbi1i.mongodb.net:27017,cluster0-shard-00-01.gbi1i.mongodb.net:27017,cluster0-shard-00-02.gbi1i.mongodb.net:27017/?ssl=true&replicaSet=atlas-codyet-shard-0&authSource=admin&appName=Cluster0";
-
 
 const client = new MongoClient(uri, {
       serverApi: {
@@ -116,7 +109,7 @@ async function run() {
             });
 
 
-            // final order 
+            // final order section 
 
             app.post('/order', async (req, res) => {
                   const body = req.body
