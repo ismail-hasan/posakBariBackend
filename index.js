@@ -16,7 +16,7 @@ app.use(express.json());
 //mongoDB
 
 const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-shard-00-00.gbi1i.mongodb.net:27017,cluster0-shard-00-01.gbi1i.mongodb.net:27017,cluster0-shard-00-02.gbi1i.mongodb.net:27017/?ssl=true&replicaSet=atlas-codyet-shard-0&authSource=admin&appName=Cluster0`;
-console.log(uri)
+
 
 const client = new MongoClient(uri, {
       serverApi: {
@@ -37,12 +37,12 @@ async function run() {
 
 
             app.get("/product", async (req, res) => {
-                  let query = {}; // Default query faka, mane sob data ashbe
+                  let query = {};
 
                   // Jodi URL e category thake, tahole query update hobe
                   if (req.query.category) {
                         query = { category: req.query.category };
-                        // Note: 'category' namer field apnar database e thakte hobe
+
                   }
 
                   const result = await productCollection.find(query).toArray();
@@ -135,7 +135,6 @@ async function run() {
             app.patch('/ceheckout/:email', async (req, res) => {
                   try {
                         const email = req.params.email;
-                        console.log(email)
                         const filter = { userEmail: email, order: false };
                         const updateDoc = {
                               $set: { order: true }
@@ -191,7 +190,7 @@ async function run() {
             console.log("Pinged your deployment. You successfully connected to MongoDB!");
       } finally {
 
-            // await client.close();
+            await client.close();
       }
 
 
