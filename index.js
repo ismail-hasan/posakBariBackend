@@ -69,6 +69,8 @@ app.get("/", (req, res) => {
 
 // ---- Routes (ekhon run() er baire, tai always registered thakbe) ----
 
+console.log("check")
+
 app.get("/product", async (req, res) => {
       try {
             const db = await getDB();
@@ -331,6 +333,85 @@ app.get("/manufacture", async (req, res) => {
       res.send(result);
 });
 
+
+/// manufetcher id pathh
+
+app.patch("/manufacture/:id", async (req, res) => {
+      try {
+            const db = await getDB();
+            const manufactureOrderCollection = db.collection("manufactureOrder");
+            const { id } = req.params;
+            const { status } = req.body;
+
+            if (!status) {
+                  return res.status(400).send({
+                        message: "Status is required",
+                  });
+            }
+
+            const result = await manufactureOrderCollection.updateOne(
+                  { _id: new ObjectId(id) },
+                  {
+                        $set: {
+                              status: status,
+                        },
+                  }
+            );
+
+            if (result.matchedCount === 0) {
+                  return res.status(404).send({
+                        message: "Order not found",
+                  });
+            }
+
+            res.send({
+                  success: true,
+                  message: "Order status updated successfully",
+                  status: status,
+            });
+      } catch (error) {
+            console.error("Status update error:", error);
+
+            res.status(500).send({
+                  success: false,
+                  message: "Failed to update order status",
+                  error: error.message,
+            });
+      }
+});
+
+app.delete("/manufacture/:id", async (req, res) => {
+      try {
+
+            const db = await getDB();
+            const manufactureOrderCollection = db.collection("manufactureOrder");
+            const { id } = req.params;
+
+            const result = await manufactureOrderCollection.deleteOne({
+                  _id: new ObjectId(id),
+            });
+
+            if (result.deletedCount === 0) {
+                  return res.status(404).send({
+                        success: false,
+                        message: "Order not found",
+                  });
+            }
+
+            res.send({
+                  success: true,
+                  message: "Order deleted successfully",
+            });
+      } catch (error) {
+            console.error("Delete order error:", error);
+
+            res.status(500).send({
+                  success: false,
+                  message: "Failed to delete order",
+                  error: error.message,
+            });
+      }
+});
 
 
 
