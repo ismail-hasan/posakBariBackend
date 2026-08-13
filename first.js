@@ -34,9 +34,6 @@ async function run() {
             const productCollection = db.collection("productData");
             const orderCollection = db.collection("orderData");
             const finalOrderCollection = db.collection("finalOrderData");
-            const addCampignCollection = db.collection("addCampign");
-            const superDealCollection = db.collection("superDeal");
-            const manufactureOrderCollection = db.collection("manufactureOrder");
 
 
             app.get("/product", async (req, res) => {
@@ -185,71 +182,6 @@ async function run() {
 
 
 
-
-
-            app.post('/addcam', async (req, res) => {
-                  const body = req.body
-                  console.log(body)
-                  const result = await addCampignCollection.insertOne(body)
-                  res.send(result)
-            })
-
-
-            app.get("/addcam", async (req, res) => {
-                  let query = {};
-                  const result = await addCampignCollection.find(query).toArray();
-                  res.send(result);
-            });
-
-            // super deal 
-            app.post('/superdeal', async (req, res) => {
-                  const body = req.body
-                  console.log(body)
-                  const result = await superDealCollection.insertOne(body)
-                  res.send(result)
-            })
-
-
-            app.get("/superdeal", async (req, res) => {
-                  let query = {};
-                  const result = await superDealCollection.find(query).toArray();
-                  res.send(result);
-            });
-
-
-
-            app.delete('/superdeal/:id', async (req, res) => {
-                  const id = req.params.id;
-                  const query = { _id: new ObjectId(id) };
-                  const result = await superDealCollection.deleteOne(query);
-                  res.send(result);
-            });
-            app.delete('/addcam/:id', async (req, res) => {
-                  const id = req.params.id;
-                  const query = { _id: new ObjectId(id) };
-                  const result = await addCampignCollection.deleteOne(query);
-                  res.send(result);
-            });
-
-
-
-
-            // manufetcure 
-
-            app.post('/manufacture', async (req, res) => {
-                  const body = req.body
-                  console.log(body)
-                  const result = await manufactureOrderCollection.insertOne(body)
-                  res.send(result)
-            })
-
-
-
-            app.get("/manufacture", async (req, res) => {
-                  let query = {};
-                  const result = await manufactureOrderCollection.find(query).toArray();
-                  res.send(result);
-            });
 
 
 
