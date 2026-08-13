@@ -253,9 +253,83 @@ app.delete('/order/:id', async (req, res) => {
 
 });
 
+// new add addCampaign
+
+app.post('/addcam', async (req, res) => {
+      const db = await getDB();
+      const addCampignCollection = db.collection("addCampign");
+      const body = req.body
+      const result = await addCampignCollection.insertOne(body)
+      res.send(result)
+})
+
+
+app.get("/addcam", async (req, res) => {
+      const db = await getDB();
+      const addCampignCollection = db.collection("addCampign");
+      let query = {};
+      const result = await addCampignCollection.find(query).toArray();
+      res.send(result);
+});
+
+// super deal 
+app.post('/superdeal', async (req, res) => {
+      const db = await getDB();
+      const superDealCollection = db.collection("superDeal");
+      const body = req.body
+      const result = await superDealCollection.insertOne(body)
+      res.send(result)
+})
+
+
+app.get("/superdeal", async (req, res) => {
+      const db = await getDB();
+      const superDealCollection = db.collection("superDeal");
+      let query = {};
+      const result = await superDealCollection.find(query).toArray();
+      res.send(result);
+});
 
 
 
+app.delete('/superdeal/:id', async (req, res) => {
+      const db = await getDB();
+      const superDealCollection = db.collection("superDeal");
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await superDealCollection.deleteOne(query);
+      res.send(result);
+});
+
+app.delete('/addcam/:id', async (req, res) => {
+      const db = await getDB();
+      const addCampignCollection = db.collection("addCampign");
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await addCampignCollection.deleteOne(query);
+      res.send(result);
+});
+
+
+// manufetcure 
+
+app.post('/manufacture', async (req, res) => {
+      const db = await getDB();
+      const manufactureOrderCollection = db.collection("manufactureOrder");
+      const body = req.body
+      const result = await manufactureOrderCollection.insertOne(body)
+      res.send(result)
+})
+
+
+
+app.get("/manufacture", async (req, res) => {
+      const db = await getDB();
+      const manufactureOrderCollection = db.collection("manufactureOrder");
+      let query = {};
+      const result = await manufactureOrderCollection.find(query).toArray();
+      res.send(result);
+});
 
 
 
