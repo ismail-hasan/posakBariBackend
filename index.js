@@ -3,6 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+
 dotenv.config();
 
 const app = express();
@@ -11,6 +14,17 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+
+
+cloudinary.config({
+      cloud_name: 'usdt0zsd',
+      api_key: '441784874433794',
+      api_secret: '9ypR0EyywZ3Bz0EpswdceMamh5U'
+});
+
+const upload = multer({ storage: multer.memoryStorage() });
+
 
 // mongoDB
 const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-shard-00-00.gbi1i.mongodb.net:27017,cluster0-shard-00-01.gbi1i.mongodb.net:27017,cluster0-shard-00-02.gbi1i.mongodb.net:27017/?ssl=true&replicaSet=atlas-codyet-shard-0&authSource=admin&appName=Cluster0`;
@@ -69,7 +83,6 @@ app.get("/", (req, res) => {
 
 // ---- Routes (ekhon run() er baire, tai always registered thakbe) ----
 
-console.log("check")
 
 app.get("/product", async (req, res) => {
       try {
@@ -410,6 +423,45 @@ app.delete("/manufacture/:id", async (req, res) => {
                   message: "Failed to delete order",
                   error: error.message,
             });
+      }
+});
+
+
+app.post('/upload', upload.single('image'), async (req, res) => {
+      try {
+            // ১. সবার আগে চেক করা ফাইল এসেছে কি না
+            if (!req.file) {
+                  return res.status(400).json({ error: 'কোনো ফাইল পাওয়া যায়নি!' });
+            }
+
+            // ২. ফ্রন্টএন্ড থেকে পাঠানো কালেকশনের নাম ধরা (না পাঠালে ডিফল্ট 'imageData' ধরবে)
+            const collectionName = req.body.collectionName || "imageData";
+
+            // ৩. ফাইলকে Base64 করে Cloudinary-তে পাঠানো
+            const fileStr = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+            const uploadResponse = await cloudinary.uploader.upload(fileStr);
+
+            // ৪. ডাটাবেজ থেকে DB কানেক্ট করা এবং ডাইনামিক কালেকশন সেট করা
+            const db = await getDB();
+            const targetCollection = db.collection(collectionName);
+
+            // ৫. Cloudinary থেকে পাওয়া URL ডাটাবেজে সেভ করা
+            const imageDoc = {
+                  imageUrl: uploadResponse.secure_url,
+                  createdAt: new Date()
+            };
+            const result = await targetCollection.insertOne(imageDoc);
+
+            // ৬. সফল রেসপন্স পাঠানো
+            res.json({
+                  success: true,
+                  url: uploadResponse.secure_url,
+                  insertedId: result.insertedId
+            });
+
+      } catch (err) {
+            console.error("SERVER ERROR:", err);
+            res.status(500).json({ error: err.message || 'আপলোড বা ডাটাবেজে সেভ করতে সমস্যা হয়েছে!' });
       }
 });
 
