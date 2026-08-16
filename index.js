@@ -648,7 +648,35 @@ app.delete('/category/:id', async (req, res) => {
       res.send(result);
 });
 
+// banner 
 
+
+app.post('/banner', async (req, res) => {
+      const db = await getDB();
+      const addBannerCollection = db.collection("addBanner");
+      const body = req.body
+      const result = await addBannerCollection.insertOne(body)
+      res.send(result)
+})
+
+
+app.get("/banner", async (req, res) => {
+      const db = await getDB();
+      const addBannerCollection = db.collection("addBanner");
+      let query = {};
+      const result = await addBannerCollection.find(query).toArray();
+      res.send(result);
+});
+
+
+app.delete('/banner/:id', async (req, res) => {
+      const db = await getDB();
+      const addBannerCollection = db.collection("addBanner");
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await addBannerCollection.deleteOne(query);
+      res.send(result);
+});
 
 
 
