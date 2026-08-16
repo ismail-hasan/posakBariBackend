@@ -218,23 +218,20 @@ app.patch('/ceheckout/:email', async (req, res) => {
 // });
 
 
-// oder section new add ?// final order section
+// oder section new add ?
+// final order section
 // final order section
 app.post('/order', async (req, res) => {
       try {
             const db = await getDB();
 
-            const finalOrderCollection =
-                  db.collection("finalOrderData");
+            const finalOrderCollection = db.collection("finalOrderData");
 
-            const productCollection =
-                  db.collection("productData");
+            // ⚠️ এখানে তোমার /product API-তে যে collection name আছে
+            // EXACTLY সেই collection name দিতে হবে
+            const productCollection = db.collection("productData");
 
             const { items } = req.body;
-
-            // ==========================================
-            // CHECK ORDER ITEMS
-            // ==========================================
 
             if (!Array.isArray(items) || items.length === 0) {
                   return res.status(400).send({
@@ -244,12 +241,11 @@ app.post('/order', async (req, res) => {
             }
 
             // ==========================================
-            // CHECK ALL PRODUCTS + STOCK FIRST
+            // 1. সব product-এর stock আগে check করবো
             // ==========================================
 
-            const products = [];
-
             for (const item of items) {
+
                   const productId = item.productId;
                   const quantity = Number(item.quantity);
 
@@ -260,119 +256,80 @@ app.post('/order', async (req, res) => {
                         });
                   }
 
-                  const product =
-                        await productCollection.findOne({
-                              _id: new ObjectId(productId)
-                        });
+                  const product = await productCollection.findOne({
+                        _id: new ObjectId(productId)
+                  });
 
                   if (!product) {
                         return res.status(404).send({
                               success: false,
-                              message: `${item.productName} Product not found`
+                              message: "Product not found"
                         });
                   }
 
-                  const currentStock =
-                        Number(product.stock || 0);
+                  const currentStock = Number(product.stock || 0);
 
                   if (currentStock < quantity) {
                         return res.status(400).send({
                               success: false,
-                              message:
-                                    `${product.name} এর পর্যাপ্ত stock নেই। Available stock: ${currentStock}`
+                              message: `${product.name} এর পর্যাপ্ত stock নেই। Available stock: ${currentStock}`
                         });
                   }
-
-                  products.push({
-                        productId,
-                        quantity,
-                        currentStock
-                  });
             }
 
             // ==========================================
-            // SAVE FINAL ORDER FIRST
+            // 2. Stock কমানো
             // ==========================================
 
-            const orderResult =
-                  await finalOrderCollection.insertOne(req.body);
+            for (const item of items) {
 
-            if (!orderResult.insertedId) {
-                  return res.status(500).send({
-                        success: false,
-                        message: "Order save করা যায়নি"
+                  const productId = item.productId;
+                  const quantity = Number(item.quantity);
+
+                  const product = await productCollection.findOne({
+                        _id: new ObjectId(productId)
                   });
-            }
 
-            // ==========================================
-            // UPDATE STOCK
-            // ==========================================
+                  const currentStock = Number(product.stock || 0);
 
-            const updatedProducts = [];
+                  const newStock = currentStock - quantity;
 
-            for (const item of products) {
-                  const updateResult =
-                        await productCollection.updateOne(
-                              {
-                                    _id: new ObjectId(
-                                          item.productId
-                                    ),
-                                    stock: {
-                                          $gte: item.quantity
-                                    }
-                              },
-                              {
-                                    $inc: {
-                                          stock: -item.quantity
-                                    }
+                  await productCollection.updateOne(
+                        {
+                              _id: new ObjectId(productId)
+                        },
+                        {
+                              $set: {
+                                    stock: String(newStock)
                               }
-                        );
-
-                  // Stock update failed
-                  if (updateResult.modifiedCount !== 1) {
-
-                        // Rollback order
-                        await finalOrderCollection.deleteOne({
-                              _id: orderResult.insertedId
-                        });
-
-                        return res.status(400).send({
-                              success: false,
-                              message:
-                                    `${item.productId} এর stock update করা যায়নি। Order বাতিল করা হয়েছে।`
-                        });
-                  }
-
-                  updatedProducts.push({
-                        productId: item.productId,
-                        quantity: item.quantity
-                  });
+                        }
+                  );
             }
 
             // ==========================================
-            // SUCCESS
+            // 3. Final Order Save
             // ==========================================
+
+            const result = await finalOrderCollection.insertOne(req.body);
 
             res.send({
                   success: true,
-                  insertedId: orderResult.insertedId,
+                  insertedId: result.insertedId,
                   message: "Order placed successfully"
             });
 
       } catch (error) {
 
-            console.error(
-                  "Error creating final order:",
-                  error
-            );
+            console.error("Error creating final order:", error);
 
             res.status(500).send({
                   success: false,
-                  message: "Order place করা যায়নি",
-                  error: error.message
+                  error: "Internal Server Error"
             });
       }
 });
+
+
 
 
 
