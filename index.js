@@ -219,14 +219,22 @@ app.patch('/ceheckout/:email', async (req, res) => {
 
 
 // oder section new add ?// final order section
+// final order section
 app.post('/order', async (req, res) => {
       try {
             const db = await getDB();
 
-            const finalOrderCollection = db.collection("finalOrderData");
-            const productCollection = db.collection("productData");
+            const finalOrderCollection =
+                  db.collection("finalOrderData");
+
+            const productCollection =
+                  db.collection("productData");
 
             const { items } = req.body;
+
+            // ==========================================
+            // CHECK ORDER ITEMS
+            // ==========================================
 
             if (!Array.isArray(items) || items.length === 0) {
                   return res.status(400).send({
@@ -236,17 +244,14 @@ app.post('/order', async (req, res) => {
             }
 
             // ==========================================
-            // 1. আগে সব product-এর stock check
+            // CHECK ALL PRODUCTS + STOCK FIRST
             // ==========================================
+
+            const products = [];
 
             for (const item of items) {
                   const productId = item.productId;
                   const quantity = Number(item.quantity);
-
-                  console.log("Checking product:", {
-                        productId,
-                        quantity
-                  });
 
                   if (!productId || quantity <= 0) {
                         return res.status(400).send({
@@ -255,83 +260,116 @@ app.post('/order', async (req, res) => {
                         });
                   }
 
-                  const product = await productCollection.findOne({
-                        _id: new ObjectId(productId)
-                  });
-
-                  console.log("Found product:", product);
+                  const product =
+                        await productCollection.findOne({
+                              _id: new ObjectId(productId)
+                        });
 
                   if (!product) {
                         return res.status(404).send({
                               success: false,
-                              message: "Product not found"
+                              message: `${item.productName} Product not found`
                         });
                   }
 
-                  const currentStock = Number(product.stock || 0);
+                  const currentStock =
+                        Number(product.stock || 0);
 
                   if (currentStock < quantity) {
                         return res.status(400).send({
                               success: false,
-                              message: `${product.name} এর পর্যাপ্ত stock নেই। Available stock: ${currentStock}`
+                              message:
+                                    `${product.name} এর পর্যাপ্ত stock নেই। Available stock: ${currentStock}`
                         });
                   }
-            }
 
-            // ==========================================
-            // 2. Stock কমানো
-            // ==========================================
-
-            for (const item of items) {
-                  const productId = item.productId;
-                  const quantity = Number(item.quantity);
-
-                  const updateResult = await productCollection.updateOne(
-                        {
-                              _id: new ObjectId(productId),
-                              stock: { $gte: quantity }
-                        },
-                        {
-                              $inc: {
-                                    stock: -quantity
-                              }
-                        }
-                  );
-
-                  console.log("Stock update result:", {
+                  products.push({
                         productId,
                         quantity,
-                        matchedCount: updateResult.matchedCount,
-                        modifiedCount: updateResult.modifiedCount
+                        currentStock
                   });
-
-                  // Stock update না হলে order বন্ধ
-                  if (updateResult.matchedCount === 0) {
-                        return res.status(400).send({
-                              success: false,
-                              message: "Stock update করা যায়নি। আবার চেষ্টা করুন।"
-                        });
-                  }
             }
 
             // ==========================================
-            // 3. Final Order Save
+            // SAVE FINAL ORDER FIRST
             // ==========================================
 
-            const result = await finalOrderCollection.insertOne(req.body);
+            const orderResult =
+                  await finalOrderCollection.insertOne(req.body);
+
+            if (!orderResult.insertedId) {
+                  return res.status(500).send({
+                        success: false,
+                        message: "Order save করা যায়নি"
+                  });
+            }
+
+            // ==========================================
+            // UPDATE STOCK
+            // ==========================================
+
+            const updatedProducts = [];
+
+            for (const item of products) {
+                  const updateResult =
+                        await productCollection.updateOne(
+                              {
+                                    _id: new ObjectId(
+                                          item.productId
+                                    ),
+                                    stock: {
+                                          $gte: item.quantity
+                                    }
+                              },
+                              {
+                                    $inc: {
+                                          stock: -item.quantity
+                                    }
+                              }
+                        );
+
+                  // Stock update failed
+                  if (updateResult.modifiedCount !== 1) {
+
+                        // Rollback order
+                        await finalOrderCollection.deleteOne({
+                              _id: orderResult.insertedId
+                        });
+
+                        return res.status(400).send({
+                              success: false,
+                              message:
+                                    `${item.productId} এর stock update করা যায়নি। Order বাতিল করা হয়েছে।`
+                        });
+                  }
+
+                  updatedProducts.push({
+                        productId: item.productId,
+                        quantity: item.quantity
+                  });
+            }
+
+            // ==========================================
+            // SUCCESS
+            // ==========================================
 
             res.send({
                   success: true,
-                  insertedId: result.insertedId,
+                  insertedId: orderResult.insertedId,
                   message: "Order placed successfully"
             });
 
       } catch (error) {
-            console.error("Error creating final order:", error);
+
+            console.error(
+                  "Error creating final order:",
+                  error
+            );
 
             res.status(500).send({
                   success: false,
-                  error: "Internal Server Error"
+                  message: "Order place করা যায়নি",
+                  error: error.message
             });
       }
 });
